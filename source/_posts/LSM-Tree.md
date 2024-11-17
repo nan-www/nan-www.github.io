@@ -20,7 +20,7 @@ Abase 的存储采用的[RocksDB](https://rocksdb.org/)，而RocksDB的存储结
 
 站在IO的视角来看，Cost（append) <<  Cost (in-place)。原因是原地写会产生大量的随机IO。 而追加写避免随机IO的方法则是朴素的以空间换时间。
 
-![append_only.png](LSM-Tree%2Fappend_only.png)
+![append_only.png](LSM-Tree/append_only.png)
 > 在LSM-Tree中，删除采用的是一种名为“墓碑机制”的策略。
 > 
 > 在K-V系统中，简单地表达对某个键值的删除可以如图上所示将value置空。
@@ -29,7 +29,7 @@ Abase 的存储采用的[RocksDB](https://rocksdb.org/)，而RocksDB的存储结
 以下将LSM-Tree 简写为lsm
 
 ### 内存视角
-![img.png](LSM-Tree%2Fimg.png)
+![img.png](LSM-Tree/img.png)
 > PS：内存这么快，不用起来岂不是太可惜了。
 
 这块名为active memtable的内存块是直接接受用户写请求的“存储区”。它的容量是固定的。由于内存读写快速的特性，发生在这块内存区的写请求采用的是**原地写**。
@@ -40,19 +40,19 @@ Abase 的存储采用的[RocksDB](https://rocksdb.org/)，而RocksDB的存储结
 
 #### Active memtable满了怎么办？
 满了就触发Flush将这块内存中的所有数据都写到硬盘上。
-   ![flush.png](LSM-Tree%2Fflush.png)
+   ![flush.png](LSM-Tree/flush.png)
 #### 刷的前一刻宕机也还是丢数据？
 学过MySQL的你肯定能想到解决办法：WAL（Write Ahead Log）
-![wal.png](LSM-Tree%2Fwal.png)
+![wal.png](LSM-Tree/wal.png)
 #### 照这么看，Flush的时候写请求不全阻塞了？
 怎么处理呢？加读写锁？NO NO NO。能用设计避免并发就不要正面硬刚。
-![img_1.png](LSM-Tree%2Fimg_1.png)
+![img_1.png](LSM-Tree/img_1.png)
 当Active memtable满了的时候，LSM会在内存中**另外**创建一块Block作为新的Active memtable，并将满了的Active Memtable置为**只可读**的Block。
 >PS：当Read Only的Block刷到硬盘之后该Block对应的WAL文件就可以删掉了。
 
 ### 追加写究竟在哪体现？
 我需要再把上图画得完善些。
-![lsm_append_write.png](LSM-Tree%2Flsm_append_write.png)
+![lsm_append_write.png](LSM-Tree/lsm_append_write.png)
 Flush的时候LSM会按照**Key的值**升序排序所有的键值之后写入到一个硬盘文件中。
 
 这个硬盘文件在LSM中称为**SST**（Sorted String table)。这个过程就是一个简单的**追加写**操作了。
@@ -60,15 +60,15 @@ Flush的时候LSM会按照**Key的值**升序排序所有的键值之后写入�
 
 正如你在图中看到的一样，每个SST可以附带一些冗余的标识来标识其自身。
 由于新生成的SST中的Key的范围是**1-10**，已存在的一个SST的Key的范围是**1-5**，所以它们有可能记录了同一个Key。所以需要执行Merge操作，并在合并过程中保存对某一个Key的最新记录。
-![merge.png](LSM-Tree%2Fmerge.png)
+![merge.png](LSM-Tree/merge.png)
 
 #### 有Level-1就有Level-2吧？
 不错，LSM会把硬盘抽象成几个层次。每个层次的空间容量都是固定大小的，越往下一层的空间也就越大。
-![level.png](LSM-Tree%2Flevel.png)
+![level.png](LSM-Tree/level.png)
 ### 读请求如何处理？
 处理读请求最关键的就是要保证读到最新的数据。
 所以读请求的扫描是自上而下的。只要读到了对应的Key就立马返回。
-![deal_read.png](LSM-Tree%2Fdeal_read.png)
+![deal_read.png](LSM-Tree/deal_read.png)he
 #### 一些Trick
 在RocksDB中，Active memtable被设计成一个跳表（skip list）来支撑范围查询和保证查询速度。
 上述的机制保证了每一层的Key都是**唯一**的。所以可以在每一层设置一个**布隆过滤器**（Bloom filter）来提高查询效率。（快速判断Key是否存在该层以减少额外的IO）
