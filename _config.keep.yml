@@ -37,7 +37,7 @@ base_info:
 # Use `||` to set icon for navigation menu, e.g. `home: / || fa-solid fa-home`
 menu:
   home: /                       # || fa-solid fa-home
-  archives: /archives           # || fa-solid fa-box-archive
+  archivesw: /archives           # || fa-solid fa-box-archive
   # tags: /tags                 # || fa-solid fa-tags
   # categories: /categories     # || fa-solid fa-layer-group
   # links: /links               # || fa-solid fa-link
@@ -51,17 +51,17 @@ menu:
 # Docs: https://keep-docs.xpoet.cn/basis/configuration-guide/first_screen.html
 # ---------------------------------------------------------------------------------------
 first_screen:
-  enable: false  # Option values: true | false
+  enable: true  # Option values: true | false
 
   # First screen background image in light mode, You can use local image path or image link
-  background_img: /img/bg.svg
+  background_img: /images/bg.svg
 
   # First screen background image in dark mode, You can use local image path or image link
-  background_img_dark: /img/bg.svg
+  background_img_dark: /images/bg.svg
 
   # First screen description
   # You can use the "||" to begin a newline, maximum is two lines.
-  description: Keep writing and Keep loving.
+  description: 记录所思所想，希望对你也有所帮助
 
   # If enable hitokoto, first screen description is different every time when you enter the website
   hitokoto: false      # Option values: true | false
@@ -71,21 +71,21 @@ first_screen:
 # Docs: https://keep-docs.xpoet.cn/basis/configuration-guide/social_contact.html
 # ---------------------------------------------------------------------------------------
 social_contact:
-  enable: false      # Option values: true | false
+  enable: true      # Option values: true | false
   links:
     # Fill in your social platform links here, e.g. `github: https://github.com/XPoet`
     # If you want to click open the picture, you need to add a prefix `img | `,
     # at the same time change your link to the image link.
     # e.g. `weixin: img | ./img/qrcode.png`
-    github:          # GitHub
-    weixin:          # WeChat
-    qq:              # QQ
-    weibo:           # WeiBo
-    zhihu:           # ZhiHu
-    twitter:         # Twitter
-    x:               # X
-    facebook:        # Facebook
-    email:           # Email
+    github:          https://github.com/nan-www?tab=repositories
+#    weixin:          # WeChat
+#    qq:              # QQ
+#    weibo:           # WeiBo
+#    zhihu:           # ZhiHu
+#    twitter:         # Twitter
+#    x:               # X
+#    facebook:        # Facebook
+    email:           nan_wu@foxmail.com
 
 
 # ---------------------------------------------------------------------------------------
@@ -93,13 +93,13 @@ social_contact:
 # ---------------------------------------------------------------------------------------
 scroll:
   # Show progress bar in top when page scroll
-  progress_bar: false  # Option values: true | false
+  progress_bar: true  # Option values: true | false
 
   # Show percent when page scroll
   percent: false       # Option values: true | false
 
   # Hide header in top when page scroll
-  hide_header: true    # Option values: true | false
+  hide_header: false    # Option values: true | false
 
 
 # ---------------------------------------------------------------------------------------
@@ -164,8 +164,8 @@ post:
 code_block:
   # Toolbar include: "code copy", "code block collapse" and "code language"
   tools:
-    enable: false            # Option values: true | false
-    style: default           # Option values: default | mac
+    enable: true            # Option values: true | false
+    style: mac           # Option values: default | mac
   highlight_theme: default   # Option values: default | obsidian
 
 
@@ -207,8 +207,8 @@ website_count:
 # See: https://github.com/theme-next/hexo-generator-searchdb
 # ---------------------------------------------------------------------------------------
 local_search:
-  enable: false   # Option values: true | false
-  preload: false  # Preload the search data when the page loads. Option values: true | false
+  enable: true   # Option values: true | false
+  preload: true  # Preload the search data when the page loads. Option values: true | false
 
 
 # ---------------------------------------------------------------------------------------
