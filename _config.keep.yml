@@ -26,6 +26,8 @@ base_info:
   # Website favicon, You can use local image path or image link
   favicon: /images/avatar.svg
 
+  mod: light
+
 
 # ---------------------------------------------------------------------------------------
 # Docs: https://keep-docs.xpoet.cn/basis/configuration-guide/menu.html
