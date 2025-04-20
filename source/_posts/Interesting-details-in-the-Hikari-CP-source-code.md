@@ -128,7 +128,7 @@ public Connection getConnection(final long hardTimeout) throws SQLException {
 final boolean isAllowPoolSuspension = false;
 public HikariPool(final HikariConfig config) {
     super(config);
-    isAllowPoolSuspension = config..isAllowPoolSuspension();
+    isAllowPoolSuspension = config.isAllowPoolSuspension();
 }
 public Connection getConnection(final long hardTimeout) throws SQLException {
     if (isAllowPoolSuspension)
