@@ -1,0 +1,15 @@
+@startuml
+participant Poller as p
+?-> p: start()方法
+par 在一个操作系统线程内
+  loop 无限循环
+  p -> Liunx: Epoll.wait
+  note over Liunx: Epoll.wait方法会阻塞操作系统的线程
+  Liunx --> p: 监听到网络IO事件
+  p -> p: 获取IO事件对应的文件描述符
+  p -[#red]> p: 在哈希表中查询对应的协程引用
+  p -[#red]> p: 将对应协程提交到调度器等待调度器将其重新挂载到空闲的OS Thread上。
+  end
+end
+
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+participant Poller as p
+
+?-> p: 调用Poller的静态方法时
+p -> Pollers ** : New一个实例
+Pollers ->]: 读取环境变量
+alt 协程模式的Poller
+  note over Pollers: 暂不讨论。
+end
+note over Pollers: Poller的子类是不同操作系统上的NIO实现\n如果是Linux的话就是大家熟知的Epoll
+Pollers ->]: 读取环境变量决定 readPollers和writePollers的数量
+note over Pollers: 平台线程模式下 read 和 write的数量都是1
+Pollers -> Pollers: 分别创建一个读和写的Poller
+Pollers --> p: return
+
+@enduml

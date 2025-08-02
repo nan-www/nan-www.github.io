@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+actor user
+participant Frontier as ft #add8e6
+participant Gateway as gw
+participant Biz_service as bs #2ae0c8
+participant Message_api as ma
+database Abase as abase #fe6673
+queue conversation_topic as ct #00bfff
+participant consumer_1 as c1
+
+autonumber
+note over bs: Maintain by other business
+
+user -> ft: Send msg by Websocket
+ft -> gw: push
+gw -> bs: Callback
+bs --> gw:
+alt msg is intercepted
+    gw -x gw: throw this message
+end
+gw -> ma: RPC
+ma -> ma: Generate message\n ID for this message
+!pragma teoz true
+ma -> ct: produce
+& ct -> c1: consume
+c1 -> ma: RPC
+ma -> abase: write msgID : message
+c1 -> abase: write conversationID : msgID
+c1 -> c1: Get all member of conversation
+c1 ->
+@enduml
