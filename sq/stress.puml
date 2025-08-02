@@ -1,0 +1,21 @@
+@startuml
+participant Rhino as r
+participant Target as t
+participant Rhino_moke as rm
+
+r -> t: 调用压测接口
+par
+  t -> rm: RPC Call => 1
+  rm -> rm: wait 100ms
+  rm --> t:
+end
+par
+  t -> rm: RPC Call => 2
+  rm -> rm: wait 100ms
+  rm --> t:
+end
+t -> t: 等待两个并行RPC请求结束
+t -> t: Log
+t -> r:
+
+@enduml
